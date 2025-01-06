@@ -12,19 +12,21 @@ import java.util.List;
 public class SettingsController {
 
     @FXML
-    private ListView<String> currencyListView;
+    private ListView<String> currencyListView; // ListView az elérhető valuták megjelenítésére
 
-    private List<String> availableCurrencies = new ArrayList<>();
-    private List<String> selectedCurrencies = new ArrayList<>();
+    private List<String> availableCurrencies = new ArrayList<>(); // Az összes elérhető valuta listája
+    private List<String> selectedCurrencies = new ArrayList<>(); // A felhasználó által kiválasztott kedvenc valuták listája
 
-    private CurrencyConverterController currencyConverterController;
+    private CurrencyConverterController currencyConverterController; // A valuta váltó vezérlő referencia
 
     public void setCurrencyConverterController(CurrencyConverterController controller) {
         this.currencyConverterController = controller;
     }
 
+    // Az FXML inicializálása, amely a valuták listájának feltöltéséért és a ListView egyedi megjelenítéséért felel
     @FXML
     public void initialize() {
+        // Elérhető valuták hozzáadása a listához
         availableCurrencies.add("Amerikai dollár (USD)");
         availableCurrencies.add("Angol font (GBP)");
         availableCurrencies.add("Ausztrál dollár (AUD)");
@@ -54,8 +56,10 @@ public class SettingsController {
         availableCurrencies.add("Török líra (TRY)");
         availableCurrencies.add("Új-zélandi dollár (NZD)");
 
+        // ListView feltöltése az elérhető valutákkal
         currencyListView.getItems().addAll(availableCurrencies);
 
+        // Egyedi cellák megjelenítése a ListView-ban, ahol minden elem egy CheckBox
         currencyListView.setCellFactory(lv -> new ListCell<String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -74,6 +78,7 @@ public class SettingsController {
             }
         });
     }
+    // Kezeli a valuta kiválasztásának vagy törlésének logikáját
     private void handleCurrencySelection(CheckBox checkBox, String item) {
         if (checkBox.isSelected()) {
             selectedCurrencies.add(item);
@@ -82,14 +87,17 @@ public class SettingsController {
         }
     }
 
+    // A "Mentés" gomb eseménykezelője
     @FXML
     private void handleSaveButtonAction() {
+        // Ellenőrzi, hogy a fő vezérlő referencia be van-e állítva
         if (currencyConverterController == null) {
             System.out.println("currencyConverterController referencia NULL!");
         } else {
             System.out.println("currencyConverterController referencia OK!");
         }
 
+        // Frissíti a fő vezérlő kedvenc valutáit, ha az referencia nem null
         if (currencyConverterController != null) {
             currencyConverterController.setFavoriteCurrencies(selectedCurrencies);
         } else {
