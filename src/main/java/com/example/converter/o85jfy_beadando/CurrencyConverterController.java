@@ -73,7 +73,34 @@ public class CurrencyConverterController {
 
     @FXML
     private void handleConvertButtonAction() {
+        String fromCurrency = fromCurrencyComboBox.getValue();
+        String toCurrency = toCurrencyComboBox.getValue();
+        String amountText = inputAmount.getText();
+
+        if (fromCurrency == null || toCurrency == null) {
+            resultLabel.setText("Kérlek, válassz ki két pénznemet!");
+            return;
+        }
+
+        Double fromRate = exchangeRates.get(fromCurrency);
+        Double toRate = exchangeRates.get(toCurrency);
+
+        if (fromRate == null || toRate == null) {
+            resultLabel.setText("Érvénytelen valuta van kiválasztva.");
+            return;
+        }
+
+        try {
+            double amount = Double.parseDouble(amountText);
+            double convertedAmount = (amount / fromRate) * toRate;
+
+            resultLabel.setText(String.format("%.2f %s átváltva:\n%.2f %s",
+                    amount, fromCurrency, convertedAmount, toCurrency));
+        } catch (NumberFormatException ex) {
+            resultLabel.setText("Érvénytelen összeg! Kérlek, adj meg egy számot.");
+        }
     }
+
 
     @FXML
     private void handleSettingsButtonAction() {
