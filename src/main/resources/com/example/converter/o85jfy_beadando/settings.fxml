@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<VBox xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.atm.o85jfy_beadando.SettingsController" spacing="10" alignment="CENTER" prefWidth="400.0" prefHeight="300.0">
+    <Label text="Kedvenc valuták kiválasztása" style="-fx-font-size: 16px;"/>
+
+    <ListView fx:id="currencyListView" prefHeight="200.0" prefWidth="300.0"
+              style="-fx-border-color: black;" />
+
+    <Button text="Mentés" onAction="#handleSaveButtonAction" />
 </VBox>
