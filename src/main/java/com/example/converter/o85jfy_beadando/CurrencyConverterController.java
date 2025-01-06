@@ -104,6 +104,21 @@ public class CurrencyConverterController {
 
     @FXML
     private void handleSettingsButtonAction() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
+            Parent root = loader.load();
+
+            SettingsController settingsController = loader.getController();
+
+            settingsController.setCurrencyConverterController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Beállítások");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setFavoriteCurrencies(List<String> favorites) {
