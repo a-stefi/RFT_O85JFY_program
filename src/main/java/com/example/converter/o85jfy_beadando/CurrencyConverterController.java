@@ -128,5 +128,7 @@ public class CurrencyConverterController {
     }
 
     public void printFavoriteCurrencies() {
+        System.out.println("Kedvenc valuták: " + favoriteCurrencies);
     }
+
 }
