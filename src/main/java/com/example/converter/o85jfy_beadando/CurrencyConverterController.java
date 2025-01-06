@@ -122,9 +122,25 @@ public class CurrencyConverterController {
     }
 
     public void setFavoriteCurrencies(List<String> favorites) {
+        favoriteCurrencies.clear();
+        favoriteCurrencies.addAll(favorites);
+        updateComboBoxes();
     }
 
     private void updateComboBoxes() {
+        if (!favoriteCurrencies.isEmpty()) {
+            fromCurrencyComboBox.getItems().clear();
+            toCurrencyComboBox.getItems().clear();
+
+            fromCurrencyComboBox.getItems().addAll(favoriteCurrencies);
+            toCurrencyComboBox.getItems().addAll(favoriteCurrencies);
+        } else {
+            fromCurrencyComboBox.getItems().clear();
+            toCurrencyComboBox.getItems().clear();
+
+            fromCurrencyComboBox.getItems().addAll(allCurrencies);
+            toCurrencyComboBox.getItems().addAll(allCurrencies);
+        }
     }
 
     public void printFavoriteCurrencies() {
