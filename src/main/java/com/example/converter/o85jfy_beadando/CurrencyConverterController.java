@@ -15,29 +15,31 @@ import java.util.Map;
 public class CurrencyConverterController {
 
     @FXML
-    private TextField inputAmount;
+    private TextField inputAmount; // Beviteli mező az összeg megadásához
 
     @FXML
-    private ComboBox<String> fromCurrencyComboBox;
+    private ComboBox<String> fromCurrencyComboBox; // Forrás valuta kiválasztása
 
     @FXML
-    private ComboBox<String> toCurrencyComboBox;
+    private ComboBox<String> toCurrencyComboBox; // Cél valuta kiválasztása
 
     @FXML
-    private Label resultLabel;
+    private Label resultLabel; // Az átváltás eredményének megjelenítése
 
-    private final Map<String, Double> exchangeRates = new HashMap<>();
+    private final Map<String, Double> exchangeRates = new HashMap<>(); // Árfolyamok tárolása
 
-    private static final List<String> allCurrencies = new ArrayList<>();
+    private static final List<String> allCurrencies = new ArrayList<>(); // Az összes elérhető valuta
 
-    private List<String> favoriteCurrencies = new ArrayList<>();
+    private List<String> favoriteCurrencies = new ArrayList<>(); // A kedvenc valuták listája
 
+    // Valuták inicializálása
     @FXML
     public void initialize() {
         addCurrencies();
-        updateComboBoxes();
+        updateComboBoxes(); // Kombóboxok frissítése a valutákkal
     }
 
+    // Árfolyamok és valuták feltöltése
     private void addCurrencies() {
     exchangeRates.put("Amerikai dollár (USD)", 0.0026);
     exchangeRates.put("Angol font (GBP)", 0.0020);
@@ -68,9 +70,11 @@ public class CurrencyConverterController {
     exchangeRates.put("Török líra (TRY)", 0.077);
     exchangeRates.put("Új-zélandi dollár (NZD)", 0.0041);
 
+    // Minden valuta hozzáadása a listához
     allCurrencies.addAll(exchangeRates.keySet());
 }
 
+    // Átváltás logikája
     @FXML
     private void handleConvertButtonAction() {
         String fromCurrency = fromCurrencyComboBox.getValue();
@@ -78,6 +82,7 @@ public class CurrencyConverterController {
         String amountText = inputAmount.getText();
 
         if (fromCurrency == null || toCurrency == null) {
+            // Ha nincs kiválasztva mindkét valuta akkor hibakezelés
             resultLabel.setText("Kérlek, válassz ki két pénznemet!");
             return;
         }
@@ -86,17 +91,21 @@ public class CurrencyConverterController {
         Double toRate = exchangeRates.get(toCurrency);
 
         if (fromRate == null || toRate == null) {
+            // Hibakezelés érvénytelen valuták esetén
             resultLabel.setText("Érvénytelen valuta van kiválasztva.");
             return;
         }
 
+        // Beírt összeg konvertálása számértékké
         try {
             double amount = Double.parseDouble(amountText);
             double convertedAmount = (amount / fromRate) * toRate;
 
+            // Eredmény megjelenítése
             resultLabel.setText(String.format("%.2f %s átváltva:\n%.2f %s",
                     amount, fromCurrency, convertedAmount, toCurrency));
         } catch (NumberFormatException ex) {
+            // Hibakezelés érvénytelen összeg esetén
             resultLabel.setText("Érvénytelen összeg! Kérlek, adj meg egy számot.");
         }
     }
@@ -105,11 +114,14 @@ public class CurrencyConverterController {
     @FXML
     private void handleSettingsButtonAction() {
         try {
+            // Beállítások ablak megnyitása
             FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
             Parent root = loader.load();
 
+            // Beállítások vezérlő inicializálása
             SettingsController settingsController = loader.getController();
 
+            // Valuta váltó vezérlő átadása a beállításoknak
             settingsController.setCurrencyConverterController(this);
 
             Stage stage = new Stage();
@@ -117,7 +129,7 @@ public class CurrencyConverterController {
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Hiba kiírása konzolra
         }
     }
 
@@ -128,6 +140,7 @@ public class CurrencyConverterController {
     }
 
     private void updateComboBoxes() {
+        // Kombóboxok frissítése kedvenc vagy összes valutával
         if (!favoriteCurrencies.isEmpty()) {
             fromCurrencyComboBox.getItems().clear();
             toCurrencyComboBox.getItems().clear();
@@ -144,6 +157,7 @@ public class CurrencyConverterController {
     }
 
     public void printFavoriteCurrencies() {
+        // Kedvenc valuták kiírása a konzolra
         System.out.println("Kedvenc valuták: " + favoriteCurrencies);
     }
 
